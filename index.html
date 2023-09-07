@@ -71,10 +71,11 @@
     <div class="container">
         <h3>Enter a Number Between 1 - 10</h3>
         <div class="form">
-            
-            <input type="text" id="number" name="number" placeholder="Enter the number">
-            <button id="submit" onclick="checkAnswer()">Check Number</button>
-            <span id="wrongAnswer" style="color: red"></span>
+            <form action="" style="display: flex; flex-direction: column;" id="gamer_form">
+                <input type="text" id="number" name="number" placeholder="Enter the number">
+                <button id="submit" type="submit" style="cursor: pointer;">Check Number</button>
+                <span id="wrongAnswer" style="color: red"></span>
+            </form>
             
         </div>
         <div class="result">
@@ -83,34 +84,57 @@
             <h5>Your Score: <span id="score"></span></h5>
         </div>
     </div>
-
+    
+    <!-- Jquery  -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+    <!-- Custom Script -->
     <script>
-        var input = document.getElementById("number")
-        var answer = document.getElementById("correctAnswer")
-        var wrongAnswer = document.getElementById("wrongAnswer")
-        var numberOfRounds = 0;
-        var score = 0;
-        var yourscore = document.getElementById("score")
-        var attends = document.getElementById("numberOfRounds")
-        attends.innerHTML= numberOfRounds;
-        function checkAnswer(){
-            numberOfRounds = numberOfRounds+1;
-            var randomNum = Math.floor(Math.random() * 10) + 1;
-            if (number.value == randomNum){
-                    answer.innerHTML= randomNum;
-                    input.value="";
-                    attends.innerHTML=numberOfRounds;
-                    answer.innerHTML= randomNum;
-                    yourscore= yourscore + 1;
-                } else {
-                    wrongAnswer.style.display="block";
-                    wrongAnswer.innerHTML = "Wrong Answer"
-                    input.value="";
-                    attends.innerHTML=numberOfRounds;
-                    answer.innerHTML= randomNum;
-                    yourscore.innerHTML = score
+        $(document).ready(function(){
+            // Setting value to 0
+            var score = 0;
+            var attend = 0;
+            var correctAnswer;
+            // If the use click the check number
+            $('#gamer_form').submit(function(e){
+                // preventing reload
+                e.preventDefault();
+                // Getting Value from input 
+                var userInput = $('#number').val();
+                var randomNum = Math.floor(Math.random() * 10) + 1;
+                // if the user not entered number alert the enter number
+                if(userInput == ""){
+                    alert("Enter number")
+                    $('#gamer_form')[0].reset();
+                    $('#number').focus();
+                    $('#wrongAnswer').fadeOut()
                 }
-            }
+                // If the user enter the number check the if it is matching or not
+                else{
+                    // if number correct increase the score and provide the output
+                    if(userInput == randomNum){
+                        score= score+1;
+                        attend= attend+1;
+                        $('#gamer_form')[0].reset();
+                        $('#number').focus();
+                        $('#wrongAnswer').fadeOut()
+
+                    }
+                    // if the number not correct increase the attend and provide the output
+                    else{
+                        $('#wrongAnswer').html("Wrong Answer  " + userInput)
+                        $('#wrongAnswer').fadeIn()
+                        $('#gamer_form')[0].reset();
+                        $('#number').focus();
+                        attend= attend+1;
+                    }
+                }
+                // Show the results
+                $('#score').html(score);
+                $('#correctAnswer').html(randomNum);
+                $('#numberOfRounds').html(attend);
+            })
+            
+        })
     </script>
 </body>
 </html>
